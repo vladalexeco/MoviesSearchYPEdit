@@ -22,7 +22,7 @@ import ru.yandex.practicum.moviessearch.databinding.FragmentMoviesBinding
 import ru.yandex.practicum.moviessearch.domain.models.Movie
 import ru.yandex.practicum.moviessearch.presentation.movies.MoviesState
 import ru.yandex.practicum.moviessearch.presentation.movies.MoviesViewModel
-import ru.yandex.practicum.moviessearch.ui.details.DetailsActivity
+import ru.yandex.practicum.moviessearch.ui.details.DetailsFragment
 
 
 class MoviesFragment : Fragment() {
@@ -35,11 +35,12 @@ class MoviesFragment : Fragment() {
 
     private val adapter = MoviesAdapter {
         if (clickDebounce()) {
-            // Здесь пришлось поправить использование Context
-            val intent = Intent(requireContext(), DetailsActivity::class.java)
-            intent.putExtra("poster", it.image)
-            intent.putExtra("id", it.id)
-            startActivity(intent)
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.rootFragmentContainerView, DetailsFragment.newInstance(it.image, it.id))
+                .addToBackStack(null)
+                .setReorderingAllowed(true)
+                .commit()
         }
     }
 
