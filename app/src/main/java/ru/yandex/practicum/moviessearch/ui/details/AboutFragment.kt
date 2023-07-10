@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.yandex.practicum.moviessearch.R
+import ru.yandex.practicum.moviessearch.core.navigation.Router
 import ru.yandex.practicum.moviessearch.databinding.FragmentAboutBinding
 import ru.yandex.practicum.moviessearch.domain.models.MovieDetails
 import ru.yandex.practicum.moviessearch.presentation.details.AboutState
 import ru.yandex.practicum.moviessearch.presentation.details.AboutViewModel
-import ru.yandex.practicum.moviessearch.ui.cast.MoviesCastActivity
+import ru.yandex.practicum.moviessearch.ui.cast.MoviesCastFragment
 
 class AboutFragment : Fragment() {
+
+    private val router : Router by inject()
 
     companion object {
         private const val MOVIE_ID = "movie_id"
@@ -48,9 +53,17 @@ class AboutFragment : Fragment() {
             }
         }
         binding.showCastButton.setOnClickListener {
-            startActivity(
-                MoviesCastActivity.newInstance(
-                    context = requireContext(),
+
+//            val arg = requireArguments().getString(MOVIE_ID).orEmpty()
+//
+//            parentFragment?.parentFragmentManager?.beginTransaction()
+//                ?.replace(R.id.rootFragmentContainerView, MoviesCastFragment.newInstance(arg))
+//                ?.addToBackStack(null)
+//                ?.setReorderingAllowed(true)
+//                ?.commit()
+
+            router.openFragment(
+                MoviesCastFragment.newInstance(
                     movieId = requireArguments().getString(MOVIE_ID).orEmpty()
                 )
             )

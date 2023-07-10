@@ -47,6 +47,9 @@ class DetailsFragment: Fragment() {
     }
 
     companion object {
+
+        const val TAG = "DetailsFragment"
+
         fun newInstance(poster: String, movieId: String): DetailsFragment {
             return DetailsFragment().apply {
                 arguments = bundleOf("poster" to poster, "movieId" to movieId)

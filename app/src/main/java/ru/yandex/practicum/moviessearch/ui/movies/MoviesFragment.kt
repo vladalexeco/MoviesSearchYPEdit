@@ -1,6 +1,5 @@
 package ru.yandex.practicum.moviessearch.ui.movies
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,8 +15,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.yandex.practicum.moviessearch.R
+import ru.yandex.practicum.moviessearch.core.navigation.Router
 import ru.yandex.practicum.moviessearch.databinding.FragmentMoviesBinding
 import ru.yandex.practicum.moviessearch.domain.models.Movie
 import ru.yandex.practicum.moviessearch.presentation.movies.MoviesState
@@ -31,16 +32,22 @@ class MoviesFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
+    private val router: Router by inject()
+
     private val viewModel by viewModel<MoviesViewModel>()
 
     private val adapter = MoviesAdapter {
         if (clickDebounce()) {
-            requireActivity().supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.rootFragmentContainerView, DetailsFragment.newInstance(it.image, it.id))
-                .addToBackStack(null)
-                .setReorderingAllowed(true)
-                .commit()
+//            parentFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.rootFragmentContainerView, DetailsFragment.newInstance(it.image, it.id), DetailsFragment.TAG)
+//                .addToBackStack(DetailsFragment.TAG)
+//                .setReorderingAllowed(true)
+//                .commit()
+
+            router.openFragment(
+                DetailsFragment.newInstance(it.image, it.id)
+            )
         }
     }
 
